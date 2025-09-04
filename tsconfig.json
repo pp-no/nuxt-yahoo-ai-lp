@@ -1,0 +1,6 @@
+{
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json",
+  "include": ["app/**/*", "types/**/*.d.ts", "server"],
+  "exclude": ["node_modules", "dist", ".output", ".nuxt"]
+}
