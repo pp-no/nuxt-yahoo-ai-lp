@@ -39,12 +39,25 @@ export default eventHandler(async () => {
   })
 
   const feed = await parser.parseURL(NEWS_RSS_URL)
-  const base = (feed.items || []).slice(0, 5).map((i: any) => ({
-    title: i.title ?? '',
-    link: i.link ?? '',
-    pubDate: i.isoDate ?? i.pubDate ?? '',
-    description: '', // ← 後で埋める
-  }))
+
+  // 1) 各アイテムのタイムスタンプを計算
+  const itemsRaw = (feed.items || []).map((i: any) => {
+    const dateStr: string = i.isoDate ?? i.pubDate ?? ''
+    const ts = Date.parse(dateStr) // 失敗すると NaN
+    return {
+      title: i.title ?? '',
+      link: i.link ?? '',
+      pubDate: dateStr,
+      description: '',
+      _ts: Number.isFinite(ts) ? ts : 0, // 無効な日付は 0 に
+    }
+  })
+
+  // 2) 最新順にソート → 先頭5件だけ使う
+  const base = itemsRaw
+    .sort((a, b) => b._ts - a._ts) // 降順（新しい→古い）
+    .slice(0, 5)
+    .map(({ _ts, ...rest }) => rest) // 内部用フィールドを落とす
 
   // 2) 各記事HTMLから meta description を抽出（直列）
   const out: Item[] = []
