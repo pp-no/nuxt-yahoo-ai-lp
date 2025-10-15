@@ -96,57 +96,52 @@ const sanitize = (html: string) => html.replace(/<script[\s\S]*?>[\s\S]*?<\/scri
         <article
           v-for="item in data?.items || []"
           :key="item.link"
-          class="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 p-6 flex flex-col"
+          class="group relative"
         >
-          <!-- タイトル -->
-          <h2 class="mb-3">
-            <a 
-              :href="item.link" 
-              target="_blank" 
-              rel="noopener" 
-              class="font-bold text-lg text-gray-800 hover:text-blue-600 transition-colors line-clamp-2 leading-relaxed group-hover:underline"
-            >
+          <a 
+            :href="item.link" 
+            target="_blank" 
+            rel="noopener"
+            class="block bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 p-6 h-full flex flex-col cursor-pointer"
+          >
+            <!-- タイトル -->
+            <h2 class="mb-3 font-bold text-lg text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-2 leading-relaxed group-hover:underline">
               {{ item.title }}
-            </a>
-          </h2>
+            </h2>
 
-          <!-- メタ情報 -->
-          <div class="flex items-center gap-3 mb-4">
-            <div class="flex items-center gap-2 text-sm text-gray-500">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
-              </svg>
-              <time>{{ formatDate(item.pubDate) }}</time>
+            <!-- メタ情報 -->
+            <div class="flex items-center gap-3 mb-4">
+              <div class="flex items-center gap-2 text-sm text-gray-500">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                </svg>
+                <time>{{ formatDate(item.pubDate) }}</time>
+              </div>
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200">
+                Yahoo!ニュース
+              </span>
             </div>
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200">
-              Yahoo!ニュース
-            </span>
-          </div>
 
-          <!-- 説明文 -->
-          <div class="flex-1 mb-4">
-            <div 
-              v-if="item.description" 
-              class="text-gray-600 text-sm leading-relaxed description-clamp"
-              v-html="sanitize(item.description)"
-            ></div>
-            <p v-else class="text-gray-400 text-sm italic">説明がありません</p>
-          </div>
+            <!-- 説明文 -->
+            <div class="flex-1 mb-4">
+              <div 
+                v-if="item.description" 
+                class="text-gray-600 text-sm leading-relaxed description-clamp"
+                v-html="sanitize(item.description)"
+              ></div>
+              <p v-else class="text-gray-400 text-sm italic">説明がありません</p>
+            </div>
 
-          <!-- 読むリンク -->
-          <div class="pt-4 border-t border-gray-100">
-            <a 
-              :href="item.link" 
-              target="_blank" 
-              rel="noopener" 
-              class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-sm group-hover:gap-3 transition-all"
-            >
-              <span>記事を読む</span>
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-              </svg>
-            </a>
-          </div>
+            <!-- 読むリンク -->
+            <div class="pt-4 border-t border-gray-100">
+              <span class="inline-flex items-center gap-2 text-blue-600 font-medium text-sm group-hover:gap-3 transition-all">
+                <span>記事を読む</span>
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </span>
+            </div>
+          </a>
         </article>
 
         <!-- 記事が0件の場合 -->
